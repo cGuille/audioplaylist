@@ -1,47 +1,55 @@
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
-    var audioPlayer = document.getElementById('player');
-    var playlist = document.getElementById('playlist');
-    var defaultTrack = document.querySelector('#default-track a');
-    var activeTrack = null;
+    var players = document.querySelectorAll('.audioplaylist');
 
-    playlist.addEventListener('click', function (event) {
-        event.preventDefault();
-        activate(event.target);
-    }, false);
+    Array.prototype.forEach.call(players, function (player) {
+        var audioPlayer = player.querySelector('audio');
+        var playlist = player.querySelector('ul');
+        var defaultTrack = player.querySelector('.default-track');
+        var activeTrack = null;
 
-    audioPlayer.addEventListener('ended', function () {
-        var nextListItem = activeTrack.parentNode.nextElementSibling;
-        var nextTrack = nextListItem ? nextListItem.firstElementChild : null;
-        if (nextTrack) {
-            activate(nextTrack);
+        playlist.addEventListener('click', function (event) {
+            event.preventDefault();
+            activate(event.target.parentNode);
+        }, false);
+
+        audioPlayer.addEventListener('ended', function () {
+            var nextTrack = activeTrack.nextElementSibling;
+            if (nextTrack) {
+                activate(nextTrack);
+            }
+        }, false);
+
+        if (defaultTrack) {
+            activate(defaultTrack, { silent: true });
         }
-    }, false);
 
-    if (defaultTrack) {
-        activate(defaultTrack, { silent: true });
-    }
-
-    function activate(track, options) {
-        if (!options) {
-            options = { silent: false };
-        }
-        if (track === activeTrack) {
-            if (activeTrack && audioPlayer.paused && !options.silent) {
+        function activate(track, options) {
+            if (!options) {
+                options = { silent: false };
+            }
+            if (track === activeTrack) {
+                if (activeTrack && audioPlayer.paused && !options.silent) {
+                    audioPlayer.play();
+                }
+                return;
+            }
+            var trackLink = track.querySelector('a');
+            if (!trackLink) {
+                console.error('No track link found.', track);
+                return;
+            }
+            audioPlayer.pause();
+            audioPlayer.src = trackLink.href;
+            if (activeTrack) {
+                activeTrack.classList.remove('active');
+            }
+            activeTrack = track;
+            activeTrack.classList.add('active');
+            if (!options.silent) {
                 audioPlayer.play();
             }
-            return;
         }
-        audioPlayer.pause();
-        audioPlayer.src = track.href;
-        if (activeTrack) {
-            activeTrack.parentNode.classList.remove('active');
-        }
-        activeTrack = track;
-        activeTrack.parentNode.classList.add('active');
-        if (!options.silent) {
-            audioPlayer.play();
-        }
-    }
+    });
 });

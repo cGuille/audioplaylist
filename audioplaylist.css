@@ -1,29 +1,29 @@
-#playlist, #player {
+.audioplaylist > audio, .audioplaylist > ul {
     background-color: #666;
     width: 400px;
     margin: 0;
     padding: 0;
 }
 
-#player {
+.audioplaylist > audio {
     display: block;
 }
 
-#playlist {
+.audioplaylist > ul {
     list-style-type: none;
 }
 
-#playlist li a {
+.audioplaylist > ul li a {
     text-decoration: none;
     color: #EEEEDD;
     background-color: #333;
     padding: 7px;
     display: block;
 }
-#playlist li a:hover {
+.audioplaylist > ul li a:hover {
     color: #333;
     background-color: #AAAA99;
 }
-#playlist .active a {
+.audioplaylist > ul .active a {
     background-color: #3E3E3E;
 }
