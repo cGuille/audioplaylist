@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     Array.prototype.forEach.call(players, function (player) {
         var audioPlayer = player.querySelector('audio');
         var playlist = player.querySelector('ul');
-        var defaultTrack = player.querySelector('.default-track');
+        var defaultTrack = player.querySelector('.default-track') || playlist.firstElementChild;
         var activeTrack = null;
 
         playlist.addEventListener('click', function (event) {
