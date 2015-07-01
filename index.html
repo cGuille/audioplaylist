@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Audio Playlist</title>
+        <style type="text/css">
+#playlist, #player {
+    background-color: #666;
+    width: 400px;
+    margin: 0;
+    padding: 0;
+}
+
+#player {
+    display: block;
+}
+
+#playlist {
+    list-style-type: none;
+}
+
+#playlist li a {
+    text-decoration: none;
+    color: #EEEEDD;
+    background-color: #333;
+    padding: 7px;
+    display: block;
+}
+#playlist li a:hover {
+    color: #333;
+    background-color: #AAAA99;
+}
+#playlist .active a {
+    background-color: #3E3E3E;
+}
+        </style>
+    </head>
+    <body>
+        <audio id="player" preload="auto" tabindex="0" controls type="audio/mpeg">
+            Sorry, your browser does not support HTML5 audio.
+        </audio>
+        <ul id="playlist">
+            <!-- Place your tracks here: -->
+            <li id="default-track">
+                <a href="http://www.archive.org/download/bolero_69/Bolero.mp3">Ravel Bolero</a>
+            </li>
+            <li>
+                <a href="http://www.archive.org/download/MoonlightSonata_755/Beethoven-MoonlightSonata.mp3">Moonlight Sonata - Beethoven</a>
+            </li>
+            <li>
+                <a href="http://www.archive.org/download/CanonInD_261/CanoninD.mp3">Canon in D Pachabel</a>
+            </li>
+        </ul>
+        <script>
+document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    var audioPlayer = document.getElementById('player');
+    var playlist = document.getElementById('playlist');
+    var defaultTrack = document.querySelector('#default-track a');
+    var activeTrack = null;
+
+    playlist.addEventListener('click', function (event) {
+        event.preventDefault();
+        activate(event.target);
+    }, false);
+
+    audioPlayer.addEventListener('ended', function () {
+        var nextListItem = activeTrack.parentNode.nextElementSibling;
+        var nextTrack = nextListItem ? nextListItem.firstElementChild : null;
+        if (nextTrack) {
+            activate(nextTrack);
+        }
+    }, false);
+
+    if (defaultTrack) {
+        activate(defaultTrack, { silent: true });
+    }
+
+    function activate(track, options) {
+        if (!options) {
+            options = { silent: false };
+        }
+        if (track === activeTrack) {
+            if (activeTrack && audioPlayer.paused && !options.silent) {
+                audioPlayer.play();
+            }
+            return;
+        }
+        audioPlayer.pause();
+        audioPlayer.src = track.href;
+        if (activeTrack) {
+            activeTrack.parentNode.classList.remove('active');
+        }
+        activeTrack = track;
+        activeTrack.parentNode.classList.add('active');
+        if (!options.silent) {
+            audioPlayer.play();
+        }
+    }
+});
+        </script>
+    </body>
+</html>
+
