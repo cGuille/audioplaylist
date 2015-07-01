@@ -1,0 +1,29 @@
+#playlist, #player {
+    background-color: #666;
+    width: 400px;
+    margin: 0;
+    padding: 0;
+}
+
+#player {
+    display: block;
+}
+
+#playlist {
+    list-style-type: none;
+}
+
+#playlist li a {
+    text-decoration: none;
+    color: #EEEEDD;
+    background-color: #333;
+    padding: 7px;
+    display: block;
+}
+#playlist li a:hover {
+    color: #333;
+    background-color: #AAAA99;
+}
+#playlist .active a {
+    background-color: #3E3E3E;
+}
